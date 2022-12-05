@@ -10,5 +10,5 @@ Climate change impacts will become more pronounced in the next decades. Decision
 
 
 ## Branching scheme of the GitHub repository
-Updates are made directly in the branch mmain, which is the most up-to-date branch. The branch release is used only for the staging of new website releases.
-Documentation and examples are generated from the master branch.
+Updates are made directly in the branch main, which is the most up-to-date branch. The branch release is used only for the staging of new website releases.
+Documentation and examples are generated from the main branch.
