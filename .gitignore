@@ -1,0 +1,12 @@
+# Ignore Mac system files
+.DS_store
+~*
+
+# Ignore .mypy_cache directory
+*.mypy_cache
+
+# Ignore pyenv version
+.python-version
+
+# it depends on the OS
+Pipfile.lock

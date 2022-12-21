@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+panel = "*"
+param = "*"
+numpy = "*"
+pandas = "*"
+plotly = "*"
+ipywidgets = "*"
+jupyterlab = "*"
+black = {extras = ["jupyter"], version = "*"}
+isort = "*"
+mypy = "*"
+ruff = "*"
+pre-commit = "*"
+bandit = "*"
+
+[requires]
+python_version = "3.10"
