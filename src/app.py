@@ -1,50 +1,107 @@
-import numpy as np
-import pandas as pd
 import panel as pn
 import param
-import plotly.express as px
 
-pn.extension("plotly", template="material")
+template = pn.template.MaterialTemplate(
+    title="DSS_Embrace",
+    side="DSS_Embrace",
+)
 
 
-class SimpleCase(param.Parameterized):
-    case_1 = param.ObjectSelector(
-        default="implemented",
-        objects=["implemented", "not implemented"],
-        label="Pick a Case",
+class DSS_Embrace(param.Parameterized):
+    _climate_scenarios = ["RPC2.6", "RPC4.5", "RPC8.5"]
+    climate_scenarios = param.ListSelector(
+        _climate_scenarios,
+        objects=_climate_scenarios,
+        label="Climate Scenarios",
+        precedence=1,
     )
-    bounds = param.Range((-2, 4), bounds=(-2, 4), precedence=1)
-    show_fig = param.Boolean(False, label="Show Figure", precedence=2)
+    figs_climate_scenarios = {
+        "RPC2.6": ["2.png", "13.png"],
+        "RPC4.5": ["5.png", "12.png"],
+        "RPC8.5": ["8.png", "11.png"],
+    }
 
-    @param.depends("case_1", watch=True)
-    def _update_bounds(self):
-        if self.case_1 == "not implemented":
-            self.param["bounds"].precedence = -1
-            self.param["show_fig"].precedence = -1
-            self.param["bounds"].default = None
-        else:
-            self.param["bounds"].precedence = 1
-            self.param["show_fig"].precedence = 2
-            self.param["bounds"].default = (-2, 4)
+    _scenarios_data_bounds = (2020, 2100)
+    scenarios_data_bounds = param.Range(
+        _scenarios_data_bounds, bounds=_scenarios_data_bounds, precedence=1
+    )
 
-    @param.depends("case_1", "bounds")
+    show_historical_data = param.Boolean(
+        True, label="Show Historical Data", precedence=2
+    )
+
+    _historical_data_bounds = (1981, 2019)
+    historical_data_bounds = param.Range(
+        _historical_data_bounds, bounds=_historical_data_bounds, precedence=2
+    )
+    show_feature_scoring = param.Boolean(
+        True, label="Show Feature Scoring", precedence=3
+    )
+
+    @param.depends("climate_scenarios", "scenarios_data_bounds")
     def view(self):
-        if self.case_1 == "implemented":
-            a = np.linspace(self.bounds[0], self.bounds[1])
-            df = pd.DataFrame(a, a).reset_index().rename(columns={"index": "X", 0: "Y"})
-            return px.line(df, x="X", y="Y", title="Title")
+        res = pn.Column()
+        for el in self.climate_scenarios:
+            row = pn.Row()
+            for fig in self.figs_climate_scenarios[el]:
+                row.append(pn.pane.PNG(f"./src/fig/{fig}", width=600))
+            res.append(row)
+        return res
+
+    @param.depends("show_historical_data", "historical_data_bounds")
+    def view_show_historical_data(self):
+        if self.show_historical_data is True:
+            return pn.pane.PNG("./src/fig/1.png", width=800)
+
         else:
             return None
 
-    @param.depends("show_fig")
-    def view_show_fig(self):
-        if self.show_fig is True:
-            a = np.linspace(-10, 10)
-            df = pd.DataFrame(a, a).reset_index().rename(columns={"index": "X", 0: "Y"})
-            return px.line(df, x="X", y="Y", title="Show Figure")
+    @param.depends("show_feature_scoring")
+    def view_show_feature_scoring(self):
+        if self.show_feature_scoring is True:
+            return pn.pane.PNG("./src/fig/14_.png", width=800)
         else:
             return None
 
 
-a = SimpleCase(name="Simple Case", parameters=["case_1", "bounds", "show_fig"])
-pn.Row(a.param, a.view, a.view_show_fig).servable(title="DSS_Embrance")
+app = DSS_Embrace(
+    name="Parameters",
+    parameters=[
+        "climate_scenarios",
+        "scenarios_data_bounds",
+        "historical_data_bounds",
+        "show_historical_data",
+        "show_feature_scoring",
+    ],
+)
+link = pn.pane.Markdown(
+    """
+    
+    See [EClim webpage](https://eclim-research.ch/) 
+
+"""
+)
+template.sidebar.append(
+    pn.Column(
+        app.param["climate_scenarios"],
+        app.param["scenarios_data_bounds"],
+        pn.layout.Divider(),
+        app.param["show_historical_data"],
+        app.param["historical_data_bounds"],
+        pn.layout.Divider(),
+        app.param["show_feature_scoring"],
+        pn.Spacer(height=20),
+        link,
+    )
+)
+
+
+template.main.append(
+    pn.Column(
+        app.view,
+        app.view_show_historical_data,
+        app.view_show_feature_scoring,
+    ),
+)
+
+template.servable()
