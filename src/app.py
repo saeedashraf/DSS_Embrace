@@ -16,9 +16,9 @@ class DSS_Embrace(param.Parameterized):
         precedence=1,
     )
     figs_climate_scenarios = {
-        "RPC2.6": ["2.png", "13.png"],
-        "RPC4.5": ["5.png", "12.png"],
-        "RPC8.5": ["8.png", "11.png"],
+        "RPC2.6": ["4.png", "13.png"],
+        "RPC4.5": ["7.png", "12.png"],
+        "RPC8.5": ["10.png", "11.png"],
     }
 
     _scenarios_data_bounds = (2020, 2100)
