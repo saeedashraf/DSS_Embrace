@@ -21,24 +21,24 @@ class DSS_Embrace(param.Parameterized):
         "RPC8.5": ["10.png", "11.png"],
     }
 
-    _scenarios_data_bounds = (2020, 2100)
-    scenarios_data_bounds = param.Range(
-        _scenarios_data_bounds, bounds=_scenarios_data_bounds, precedence=1
+    _scenarios_data_range = (2020, 2100)
+    scenarios_data_range = param.Range(
+        _scenarios_data_range, bounds=_scenarios_data_range, precedence=1
     )
 
     show_historical_data = param.Boolean(
         True, label="Show Historical Data", precedence=2
     )
 
-    _historical_data_bounds = (1981, 2019)
-    historical_data_bounds = param.Range(
-        _historical_data_bounds, bounds=_historical_data_bounds, precedence=2
+    _historical_data_range = (1981, 2019)
+    historical_data_range = param.Range(
+        _historical_data_range, bounds=_historical_data_range, precedence=2
     )
     show_feature_scoring = param.Boolean(
         True, label="Show Feature Scoring", precedence=3
     )
 
-    @param.depends("climate_scenarios", "scenarios_data_bounds")
+    @param.depends("climate_scenarios", "scenarios_data_range")
     def view(self):
         res = pn.Column()
         for el in self.climate_scenarios:
@@ -48,7 +48,7 @@ class DSS_Embrace(param.Parameterized):
             res.append(row)
         return res
 
-    @param.depends("show_historical_data", "historical_data_bounds")
+    @param.depends("show_historical_data", "historical_data_range")
     def view_show_historical_data(self):
         if self.show_historical_data is True:
             return pn.pane.PNG("./src/fig/1.png", width=800)
@@ -68,8 +68,8 @@ app = DSS_Embrace(
     name="Parameters",
     parameters=[
         "climate_scenarios",
-        "scenarios_data_bounds",
-        "historical_data_bounds",
+        "scenarios_data_range",
+        "historical_data_range",
         "show_historical_data",
         "show_feature_scoring",
     ],
@@ -84,10 +84,10 @@ link = pn.pane.Markdown(
 template.sidebar.append(
     pn.Column(
         app.param["climate_scenarios"],
-        app.param["scenarios_data_bounds"],
+        app.param["scenarios_data_range"],
         pn.layout.Divider(),
         app.param["show_historical_data"],
-        app.param["historical_data_bounds"],
+        app.param["historical_data_range"],
         pn.layout.Divider(),
         app.param["show_feature_scoring"],
         pn.Spacer(height=20),
