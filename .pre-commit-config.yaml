@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        language: system
+        entry: pipenv black --check
+        require_serial: true
+        types_or: [python, pyi]
+      - id: isort
+        name: isort
+        language: system
+        entry: pipenv isort --check-only
+        require_serial: true
+        types_or: [python, pyi]

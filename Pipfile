@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+black = {extras = ["jupyter"], version = "22.12.0"}
+isort = "5.11.4"
+mypy = "0.991"
+ruff = "0.0.215"
+pre-commit = "2.21.0"
+bandit = "1.7.4"
+
+[packages]
+panel = "*"
+param = "*"
+numpy = "*"
+pandas = "*"
+plotly = "*"
+ipywidgets = "*"
+jupyterlab = "*"
+
+[requires]
+python_version = "3.10"
