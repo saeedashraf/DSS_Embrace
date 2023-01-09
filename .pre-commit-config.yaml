@@ -3,22 +3,13 @@ repos:
     hooks:
       - id: black
         name: black
-        language: python
-        entry: black --check
-        minimum_pre_commit_version: 2.9.2
+        language: system
+        entry: pipenv black --check
         require_serial: true
         types_or: [python, pyi]
       - id: isort
-        name: isort (python)
-        language: python
-        entry: isort --check-only
-        minimum_pre_commit_version: 2.9.2
+        name: isort
+        language: system
+        entry: pipenv isort --check-only
         require_serial: true
         types_or: [python, pyi]
-      - id: bandit
-        name: bandit
-        language: python
-        entry: bandit
-        minimum_pre_commit_version: 2.9.2
-        require_serial: true
-        types_or: [python]
