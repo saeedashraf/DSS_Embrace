@@ -6,12 +6,13 @@ Climate change impacts will become more pronounced in the next decades. Decision
 
 ## Branching scheme of the GitHub repository
 
-Updates are made directly in the branch main, which is the most up-to-date branch. The branch release is used only for the staging of new website releases.
+[Git Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) is used. `main` is the maintained and up-to-date branch.
 Documentation and examples are generated from the main branch.
 
 ## Development
 
-- an M1 macOS was used
+- used on M1 macOS
+- expected to run fin on at least on Linux and MacOS
 
 ### Requirements
 
@@ -32,8 +33,7 @@ $ pyenv local 3.10.9
 $ python --version
 Python 3.10.9
 
-$ pipenv --python 3.10
-$ pipenv install --dev panel param numpy pandas plotly ipywidgets jupyterlab black[jupyter] isort mypy ruff bandit pre-commit
+$ pipenv install --dev
 $ pipenv shell
 
 
