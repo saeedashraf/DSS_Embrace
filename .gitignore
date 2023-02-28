@@ -10,3 +10,6 @@
 
 # it depends on the OS
 Pipfile.lock
+
+# Ignore sqllit
+./src/plotly_figs_
