@@ -13,3 +13,6 @@ Pipfile.lock
 
 # Ignore sqllit
 .src/plotly_figs_
+
+# Ignore Jupyter checkpoint
+.ipynb_checkpoints
