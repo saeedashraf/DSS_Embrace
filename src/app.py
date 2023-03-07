@@ -138,6 +138,8 @@ class DSS_Embrace(param.Parameterized):
             title_font=dict(size=20),
         )
 
+        # update with
+        fig.update_layout(width=1200)
         if self.show_historical_data is True:
             return fig
 
