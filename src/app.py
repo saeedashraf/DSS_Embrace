@@ -14,13 +14,16 @@ template = pn.template.MaterialTemplate(
 
 class DSS_Embrace(param.Parameterized):
     _climate_scenarios = ["RPC2.6", "RPC4.5", "RPC8.5"]
+    show_climate_scenarios = param.Boolean(
+        True, label="Show Climate Scenarios", precedence=1
+    )
     climate_scenarios = param.ListSelector(
         _climate_scenarios,
         objects=_climate_scenarios,
-        label="Climate Scenarios",
-        precedence=1,
+        label="",
+        precedence=2,
     )
-    figs_climate_scenarios = {
+    static_figs_climate_scenarios = {
         "RPC2.6": ["4.png", "13.png"],
         "RPC4.5": ["7.png", "12.png"],
         "RPC8.5": ["10.png", "11.png"],
@@ -28,16 +31,16 @@ class DSS_Embrace(param.Parameterized):
 
     _scenarios_data_range = (2020, 2100)
     scenarios_data_range = param.Range(
-        _scenarios_data_range, bounds=_scenarios_data_range, precedence=1
+        _scenarios_data_range, bounds=_scenarios_data_range, precedence=2
     )
 
     show_historical_data = param.Boolean(
-        True, label="Show Historical Data", precedence=2
+        True, label="Show Historical Data", precedence=1
     )
 
     _historical_data_range = (1981, 2019)
     historical_data_range = param.Range(
-        _historical_data_range, bounds=_historical_data_range, precedence=2
+        _historical_data_range, bounds=_historical_data_range, precedence=1
     )
     show_feature_scoring = param.Boolean(
         True, label="Show Feature Scoring", precedence=3
@@ -132,7 +135,7 @@ class DSS_Embrace(param.Parameterized):
 
         # Set subplot title
         fig.update_layout(
-            title=f"Number of Hot Days & Nights (M1) Over the Years in Zürich for {climate_scenario} (2020-2100)",
+            title=f"Number of Hot Days & Nights (M1) Over the Years in <br> Zürich for {climate_scenario}",
             title_font=dict(size=20),
             xaxis_title="Year",
             yaxis_title="Number of Hot Days & Nights",
@@ -141,17 +144,22 @@ class DSS_Embrace(param.Parameterized):
 
         return fig
 
-    @param.depends("climate_scenarios", "scenarios_data_range")
+    @param.depends(
+        "show_climate_scenarios", "climate_scenarios", "scenarios_data_range"
+    )
     def view(self):
-        res = pn.Column()
-        for el in self.climate_scenarios:
+        if self.show_climate_scenarios:
+            res = pn.Column()
+            for el in self.climate_scenarios:
 
-            new_fig = self._plot_number_of_hot_days_and_nights(el)
-            fig = self.figs_climate_scenarios[el][1]
-            row = pn.Row(new_fig, pn.pane.PNG(f"./src/fig/{fig}", width=600))
+                new_fig = self._plot_number_of_hot_days_and_nights(el)
+                fig = self.static_figs_climate_scenarios[el][1]
+                row = pn.Row(new_fig, pn.pane.PNG(f"./src/fig/{fig}", width=600))
 
-            res.append(row)
-        return res
+                res.append(row)
+            return res
+        else:
+            return None
 
     @param.depends("show_historical_data", "historical_data_range")
     def view_show_historical_data(self):
@@ -237,7 +245,7 @@ class DSS_Embrace(param.Parameterized):
         # Add title to the figure
         # Andrei: update width
         fig.update_layout(
-            title="Historical number of Hot Days & Nights (M1) Over the Years",
+            title="Historical number of Hot Days & Nights (M1) Over the Years in Zürich",
             title_font=dict(size=20),
             width=1200,
         )
@@ -258,6 +266,7 @@ class DSS_Embrace(param.Parameterized):
 app = DSS_Embrace(
     name="Parameters",
     parameters=[
+        "show_climate_scenarios",
         "climate_scenarios",
         "scenarios_data_range",
         "historical_data_range",
@@ -274,11 +283,12 @@ link = pn.pane.Markdown(
 )
 template.sidebar.append(
     pn.Column(
-        app.param["climate_scenarios"],
-        app.param["scenarios_data_range"],
-        pn.layout.Divider(),
         app.param["show_historical_data"],
         app.param["historical_data_range"],
+        pn.layout.Divider(),
+        app.param["show_climate_scenarios"],
+        app.param["climate_scenarios"],
+        app.param["scenarios_data_range"],
         pn.layout.Divider(),
         app.param["show_feature_scoring"],
         pn.Spacer(height=20),
@@ -289,8 +299,8 @@ template.sidebar.append(
 
 template.main.append(
     pn.Column(
-        app.view,
         app.view_show_historical_data,
+        app.view,
         app.view_show_feature_scoring,
     ),
 )
