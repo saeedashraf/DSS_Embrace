@@ -88,6 +88,7 @@ class DSS_Embrace(param.Parameterized):
                     mode="lines",
                     line=dict(color=color_dict[scenario_as_number], dash="dash"),
                     opacity=alpha_Fade,
+                    name=f"sim {i//p_Step+1}",
                 )
             )
 
@@ -98,6 +99,7 @@ class DSS_Embrace(param.Parameterized):
                 mode="lines",
                 line=dict(color="black", width=1.5),
                 opacity=1,
+                name="median",
             )
         )
         fig.add_trace(
@@ -107,6 +109,7 @@ class DSS_Embrace(param.Parameterized):
                 mode="lines",
                 line=dict(color="yellow", width=1.5),
                 opacity=1,
+                name="75th percentile",
             )
         )
         fig.add_trace(
@@ -116,6 +119,7 @@ class DSS_Embrace(param.Parameterized):
                 mode="lines",
                 line=dict(color="red", width=2),
                 opacity=1,
+                name="90th percentile",
             )
         )
         # Andrei: range based on scenarios_data_range, remove tickvals
@@ -135,7 +139,7 @@ class DSS_Embrace(param.Parameterized):
 
         # Set subplot title
         fig.update_layout(
-            title=f"Number of Hot Days & Nights (M1) Over the Years in <br> Zürich for {climate_scenario}",
+            title=f"Zürich, Number of Hot Days & Nights (M1) <br>Over the Years for {climate_scenario}",
             title_font=dict(size=20),
             xaxis_title="Year",
             yaxis_title="Number of Hot Days & Nights",
@@ -151,7 +155,6 @@ class DSS_Embrace(param.Parameterized):
         if self.show_climate_scenarios:
             res = pn.Column()
             for el in self.climate_scenarios:
-
                 new_fig = self._plot_number_of_hot_days_and_nights(el)
                 fig = self.static_figs_climate_scenarios[el][1]
                 row = pn.Row(new_fig, pn.pane.PNG(f"./src/fig/{fig}", width=600))
@@ -191,14 +194,26 @@ class DSS_Embrace(param.Parameterized):
 
         for i in range(0, len(arr_from_sql_matrix_HotDays_obs), p_Step):
             a = arr_from_sql_matrix_HotDays_obs[i, 1:, 1:2].astype(float)
-            fig.add_trace(
-                go.Scatter(
-                    x=x_axis_obs,
-                    y=a[:, 0],
-                    line=dict(color="green", dash="dash"),
-                    opacity=alpha_Fade_obs,
+            if i == 0:
+                fig.add_trace(
+                    go.Scatter(
+                        x=x_axis_obs,
+                        y=a[:, 0],
+                        line=dict(color="green", dash="dash"),
+                        opacity=alpha_Fade_obs,
+                        name="Observed",
+                    )
                 )
-            )
+            else:
+                fig.add_trace(
+                    go.Scatter(
+                        x=x_axis_obs,
+                        y=a[:, 0],
+                        line=dict(color="green", dash="dash"),
+                        opacity=alpha_Fade_obs,
+                        name="Sim {}".format(i),
+                    )
+                )
 
         fig.add_trace(
             go.Scatter(
@@ -206,6 +221,7 @@ class DSS_Embrace(param.Parameterized):
                 y=arr_from_sql_dfq50_years_obs.flatten(),
                 line=dict(color="black", width=2.5),
                 opacity=1,
+                name="Median",
             )
         )
         fig.add_trace(
@@ -214,6 +230,7 @@ class DSS_Embrace(param.Parameterized):
                 y=arr_from_sql_dfq75_years_obs.flatten(),
                 line=dict(color="yellow", width=2.5),
                 opacity=1,
+                name="75th percentile",
             )
         )
         fig.add_trace(
@@ -222,8 +239,10 @@ class DSS_Embrace(param.Parameterized):
                 y=arr_from_sql_dfq90_years_obs.flatten(),
                 line=dict(color="red", width=2.5),
                 opacity=1,
+                name="90th percentile",
             )
         )
+
         # Andrei: remove `ticktext=values`, ` tickvals=x_axis_obs,` dynamig range using historical_data_range
         # Andrei: use fonsize 20 as in the previous charts
         # Customize x-axis
@@ -245,7 +264,7 @@ class DSS_Embrace(param.Parameterized):
         # Add title to the figure
         # Andrei: update width
         fig.update_layout(
-            title="Historical number of Hot Days & Nights (M1) Over the Years in Zürich",
+            title="Zürich, Historical number of Hot Days & Nights (M1) Over the Years",
             title_font=dict(size=20),
             width=1200,
         )
