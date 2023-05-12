@@ -155,9 +155,9 @@ class DSS_Embrace(param.Parameterized):
         if self.show_climate_scenarios:
             res = pn.Column()
             for el in self.climate_scenarios:
-                new_fig = self._plot_number_of_hot_days_and_nights(el)
+                hot_fig = self._plot_number_of_hot_days_and_nights(el)
                 fig = self.static_figs_climate_scenarios[el][1]
-                row = pn.Row(new_fig, pn.pane.PNG(f"./src/fig/{fig}", width=600))
+                row = pn.Row(hot_fig, pn.pane.PNG(f"./src/fig/{fig}", width=600))
 
                 res.append(row)
             return res
@@ -277,7 +277,13 @@ class DSS_Embrace(param.Parameterized):
     @param.depends("show_feature_scoring")
     def view_show_feature_scoring(self):
         if self.show_feature_scoring is True:
-            return pn.pane.PNG("./src/fig/14_.png", width=800)
+            return pn.pane.PNG("./src/fig/feature_scoring.png", width=600)
+        else:
+            return None
+
+    def view_presentation3(self):
+        if self.show_feature_scoring is True:
+            return pn.pane.PNG("./src/fig/Presentation3.png", width=600)
         else:
             return None
 
@@ -320,7 +326,7 @@ template.main.append(
     pn.Column(
         app.view_show_historical_data,
         app.view,
-        app.view_show_feature_scoring,
+        pn.Row(app.view_show_feature_scoring, app.view_presentation3),
     ),
 )
 
