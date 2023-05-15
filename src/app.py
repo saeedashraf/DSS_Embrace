@@ -24,11 +24,6 @@ class DSS_Embrace(param.Parameterized):
         label="",
         precedence=2,
     )
-    static_figs_climate_scenarios = {
-        "RPC2.6": ["4.png", "13.png"],
-        "RPC4.5": ["7.png", "12.png"],
-        "RPC8.5": ["10.png", "11.png"],
-    }
 
     _scenarios_data_range = (2020, 2100)
     scenarios_data_range = param.Range(
