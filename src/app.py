@@ -15,6 +15,7 @@ template = pn.template.MaterialTemplate(
 
 class DSS_Embrace(param.Parameterized):
     _climate_scenarios = ["RPC2.6", "RPC4.5", "RPC8.5"]
+
     show_climate_scenarios = param.Boolean(
         True, label="Show Climate Scenarios", precedence=1
     )
@@ -24,7 +25,6 @@ class DSS_Embrace(param.Parameterized):
         label="",
         precedence=2,
     )
-
     _scenarios_data_range = (2020, 2100)
     scenarios_data_range = param.Range(
         _scenarios_data_range, bounds=_scenarios_data_range, precedence=2
@@ -137,14 +137,11 @@ class DSS_Embrace(param.Parameterized):
 
         return fig
 
+    @pn.cache(max_items=3, policy="LRU")
     def _plot_box_figure(self, climate_scenario):
         parent_directory = Path("./src/data/")
         scenario_as_number = climate_scenario[-3] + climate_scenario[-1]
         color_dict = {"26": "green", "45": "orange", "85": "red"}
-
-        f"./src/data/dfq90_years_{scenario_as_number}.csv",
-        f"q90_years_{scenario_as_number}",
-        f"./src/data/array_data_matrix_HotDays_{scenario_as_number}.csv",
 
         # Load data from CSV file
         df = pd.read_csv(
