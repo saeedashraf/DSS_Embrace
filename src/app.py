@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import panel as pn
 import param
+import plotly.express as px
 import plotly.graph_objects as go
 
 template = pn.template.MaterialTemplate(
@@ -50,10 +51,6 @@ class DSS_Embrace(param.Parameterized):
         parent_directory = Path("./src/data/")
         scenario_as_number = climate_scenario[-3] + climate_scenario[-1]
         color_dict = {"26": "green", "45": "orange", "85": "red"}
-
-        f"./src/data/dfq90_years_{scenario_as_number}.csv",
-        f"q90_years_{scenario_as_number}",
-        f"./src/data/array_data_matrix_HotDays_{scenario_as_number}.csv",
 
         column = f"q50_years_{scenario_as_number}"
         df_from_csv_dfq50_years = pd.read_csv(parent_directory / f"df{column}.csv")
@@ -117,7 +114,7 @@ class DSS_Embrace(param.Parameterized):
                 x=x_axis,
                 y=arr_from_sql_dfq90_years[:],
                 mode="lines",
-                line=dict(color="red", width=2),
+                line=dict(color="magenta", width=2),
                 opacity=1,
                 name="90th percentile",
             )
@@ -126,23 +123,57 @@ class DSS_Embrace(param.Parameterized):
         # Customize x-axis
         fig.update_xaxes(
             range=[self.scenarios_data_range[0], self.scenarios_data_range[1]],
-            tickfont=dict(size=20),
         )
 
         # Customize y-axis
         fig.update_yaxes(
             title="Number of Hot Days & Nights (M1)",
-            titlefont=dict(size=20),
             range=[0, 110],
-            tickfont=dict(size=20),
         )
 
         # Set subplot title
         fig.update_layout(
-            title=f"Zürich, Number of Hot Days & Nights (M1) <br>Over the Years for {climate_scenario}",
-            title_font=dict(size=20),
+            title=f"Zurich {climate_scenario}",
+            font=dict(size=20),
             xaxis_title="Year",
             yaxis_title="Number of Hot Days & Nights",
+            width=600,
+        )
+
+        return fig
+
+    def _plot_box_figure(self, climate_scenario):
+        parent_directory = Path("./src/data/")
+        scenario_as_number = climate_scenario[-3] + climate_scenario[-1]
+        color_dict = {"26": "green", "45": "orange", "85": "red"}
+
+        f"./src/data/dfq90_years_{scenario_as_number}.csv",
+        f"q90_years_{scenario_as_number}",
+        f"./src/data/array_data_matrix_HotDays_{scenario_as_number}.csv",
+
+        # Load data from CSV file
+        df = pd.read_csv(
+            parent_directory / f"data_total_decadal_{scenario_as_number}.csv"
+        )
+        df2 = df.iloc[:, -8:]
+
+        # Set colors for the box plots
+        colors = 8 * [color_dict[scenario_as_number]]
+
+        # Plot box plots with colors
+        fig = px.box(df2, color_discrete_sequence=colors)
+
+        # Customize layout
+        fig.update_yaxes(
+            range=[0, 120],
+        )
+
+        fig.update_layout(
+            title=f"Zurich {climate_scenario}",
+            font=dict(size=20),
+            yaxis_title="Number of Hot Days & Nights",
+            xaxis_title="Years",
+            boxmode="group",
             width=600,
         )
 
@@ -156,8 +187,9 @@ class DSS_Embrace(param.Parameterized):
             res = pn.Column()
             for el in self.climate_scenarios:
                 hot_fig = self._plot_number_of_hot_days_and_nights(el)
-                fig = self.static_figs_climate_scenarios[el][1]
-                row = pn.Row(hot_fig, pn.pane.PNG(f"./src/fig/{fig}", width=600))
+                box_fig = self._plot_box_figure(el)
+
+                row = pn.Row(hot_fig, box_fig)
 
                 res.append(row)
             return res
@@ -237,7 +269,7 @@ class DSS_Embrace(param.Parameterized):
             go.Scatter(
                 x=x_axis_obs,
                 y=arr_from_sql_dfq90_years_obs.flatten(),
-                line=dict(color="red", width=2.5),
+                line=dict(color="magenta", width=2.5),
                 opacity=1,
                 name="90th percentile",
             )
@@ -248,7 +280,6 @@ class DSS_Embrace(param.Parameterized):
         # Customize x-axis
         fig.update_xaxes(
             title="Years",
-            tickfont=dict(size=20),
             range=[self.historical_data_range[0], self.historical_data_range[1]],
             showgrid=True,
         )
@@ -256,7 +287,6 @@ class DSS_Embrace(param.Parameterized):
         # Customize y-axis
         fig.update_yaxes(
             title="Number of Hot Days & Nights",
-            titlefont=dict(size=20),
             range=[0, 30],
             showgrid=True,
         )
@@ -265,7 +295,7 @@ class DSS_Embrace(param.Parameterized):
         # Andrei: update width
         fig.update_layout(
             title="Zürich, Historical number of Hot Days & Nights (M1) Over the Years",
-            title_font=dict(size=20),
+            font=dict(size=20),
             width=1200,
         )
         if self.show_historical_data is True:
@@ -282,10 +312,7 @@ class DSS_Embrace(param.Parameterized):
             return None
 
     def view_presentation3(self):
-        if self.show_feature_scoring is True:
-            return pn.pane.PNG("./src/fig/Presentation3.png", width=600)
-        else:
-            return None
+        return pn.pane.PNG("./src/fig/Presentation3.png", width=600)
 
 
 app = DSS_Embrace(
@@ -326,7 +353,7 @@ template.main.append(
     pn.Column(
         app.view_show_historical_data,
         app.view,
-        pn.Row(app.view_show_feature_scoring, app.view_presentation3),
+        pn.Row(app.view_presentation3, app.view_show_feature_scoring),
     ),
 )
 
