@@ -136,7 +136,6 @@ class DSS_Embrace(param.Parameterized):
 
         return pn.pane.Plotly(fig)
 
-    @pn.cache(max_items=3, policy="LRU")
     def _plot_box_figure(self, climate_scenario):
         parent_directory = Path("./src/data/")
         scenario_as_number = climate_scenario[-3] + climate_scenario[-1]
