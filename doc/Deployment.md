@@ -29,7 +29,7 @@ $ pipenv install
 $ pipenv shell
 
 # start the application allowing the websockets
-$ panel serve src/app.py --allow-websocket-origin=<ORIGIN>
+$ panel serve src/app.py --reuse-sessions --global-loading-spinner --warm  --allow-websocket-origin=<ORIGIN>
 
 ```
 
