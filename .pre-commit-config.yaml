@@ -4,12 +4,12 @@ repos:
       - id: black
         name: black
         language: system
-        entry: pipenv black --check
+        entry: pipenv run black --check
         require_serial: true
         types_or: [python, pyi]
       - id: isort
         name: isort
         language: system
-        entry: pipenv isort --check-only
+        entry: pipenv run isort --check-only
         require_serial: true
         types_or: [python, pyi]
