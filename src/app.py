@@ -8,8 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 template = pn.template.MaterialTemplate(
-    title="DSS_Embrace",
-    side="DSS_Embrace",
+    title="DSS_Embrace", side="DSS_Embrace", header_background="ForestGreen"
 )
 
 
@@ -135,7 +134,7 @@ class DSS_Embrace(param.Parameterized):
             width=600,
         )
 
-        return fig
+        return pn.pane.Plotly(fig)
 
     @pn.cache(max_items=3, policy="LRU")
     def _plot_box_figure(self, climate_scenario):
@@ -153,7 +152,10 @@ class DSS_Embrace(param.Parameterized):
         colors = 8 * [color_dict[scenario_as_number]]
 
         # Plot box plots with colors
-        fig = px.box(df2, color_discrete_sequence=colors)
+        fig = px.box(
+            df2,
+            color_discrete_sequence=colors,
+        )
 
         # Customize layout
         fig.update_yaxes(
@@ -169,7 +171,7 @@ class DSS_Embrace(param.Parameterized):
             width=600,
         )
 
-        return fig
+        return pn.pane.Plotly(fig)
 
     @param.depends(
         "show_climate_scenarios", "climate_scenarios", "scenarios_data_range"
@@ -181,7 +183,7 @@ class DSS_Embrace(param.Parameterized):
                 hot_fig = self._plot_number_of_hot_days_and_nights(el)
                 box_fig = self._plot_box_figure(el)
 
-                row = pn.Row(hot_fig, box_fig)
+                row = pn.Row(hot_fig, box_fig, width=1200)
 
                 res.append(row)
             return res
@@ -291,7 +293,7 @@ class DSS_Embrace(param.Parameterized):
             width=1200,
         )
         if self.show_historical_data is True:
-            return fig
+            return pn.pane.Plotly(fig)
 
         else:
             return None
