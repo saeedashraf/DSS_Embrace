@@ -7,9 +7,3 @@ repos:
         entry: pipenv run black --check
         require_serial: true
         types_or: [python, pyi]
-      - id: isort
-        name: isort
-        language: system
-        entry: pipenv run isort --check-only
-        require_serial: true
-        types_or: [python, pyi]
