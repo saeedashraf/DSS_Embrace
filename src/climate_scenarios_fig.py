@@ -171,15 +171,12 @@ scenario_captions = {
 
 
 adaptation_pathways_figs = {
-    "RPC2.6": pn.pane.PNG(
-        FIG_DIRECTORY / "Presentation3.png", width=590, align="center"
-    ),
-    "RPC4.5": pn.pane.PNG(
-        FIG_DIRECTORY / "Presentation3.png", width=590, align="center"
-    ),
-    "RPC8.5": pn.pane.PNG(
-        FIG_DIRECTORY / "Presentation3.png", width=590, align="center"
-    ),
+    el: pn.pane.PNG(
+        FIG_DIRECTORY / f"metro_map_{number_from_climate_scenario(el)}.png",
+        width=590,
+        align="center",
+    )
+    for el in SCENARIOS
 }
 
 adaptation_pathways_caption = {
