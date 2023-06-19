@@ -1,12 +1,22 @@
 import panel as pn
-from climate_scenarios_fig import box_fig_plot, scenario_fig_plot
+from climate_scenarios_fig import (
+    adaptation_pathways_caption,
+    adaptation_pathways_figs,
+    box_fig_plot,
+    scenario_captions,
+    scenario_fig_plot,
+    scenario_titles,
+)
 from global_params_and_utils import (
     FIG_DIRECTORY,
     HISTORICAL_YEARS,
     SCENARIOS,
     SCENARIOS_YEARS,
 )
-from historical_data_fig import historical_data_plot
+from historical_data_fig import (
+    historical_data_caption,
+    historical_data_plot,
+)
 
 template = pn.template.MaterialTemplate(
     title="DSS_Embrace",
@@ -78,50 +88,58 @@ PLOTLY_SCENARIO_FIG_DATA_PANE_link = {
     for el in SCENARIOS
 }
 
-
+caption_styles = {"font-size": "16px"}
+title_styles = {"font-size": "20px", "text-align": "center", "font-weight": "bold"}
 column_all_scenarios = pn.Accordion(width=1200)
 for el in SCENARIOS:
     scenario_fig = PLOTLY_SCENARIO_FIG_DATA_PANE[el]
     box_fig = box_fig_plot[el]
-    row = pn.Row(scenario_fig, box_fig)
+    row = pn.Column(
+        pn.pane.HTML(
+            "Projected number of concurrent hot days and nights",
+            styles=title_styles,
+            align="center",
+        ),
+        pn.Row(scenario_fig, box_fig),
+        pn.pane.HTML(scenario_captions[el], styles=caption_styles),
+        pn.layout.Divider(),
+        pn.pane.HTML(
+            "Adaptation pathways",
+            styles=title_styles,
+            align="center",
+        ),
+        adaptation_pathways_figs[el],
+        pn.pane.HTML(adaptation_pathways_caption[el], styles=caption_styles),
+    )
 
-    column_all_scenarios.append((el, row))
+    column_all_scenarios.append((scenario_titles[el], row))
 
-
-def view_climate_scenarios(selected_climate_scenarios):
-    column_all_scenarios.clear()
-    for el in selected_climate_scenarios:
-        scenario_fig = scenario_fig_plot[el]
-        box_fig = box_fig_plot[el]
-        row = pn.Row(scenario_fig, box_fig)
-
-        column_all_scenarios.append(row)
-    return column_all_scenarios
-
+caption_feature_scoring = "Feature scoring analysis showing the relative importance of the choice of climate scenarios (RCPs), climate model (Climate Models), intra-climate model variability (Intra CM variability), thresholds of minimum temperature (Tmin) and thresholds of minimum temperature (Tmax) for the outcomes. The outcomes are the number of concurrent hot days and nights, their frequency and length. Higher numbers and bright colours indicate higher importance."
 
 # add content to template main
-
 template.main.extend(
     pn.Column(
         pn.Card(
             widget_historical_years,
             PLOTLY_HISTORICAL_DATA_PANE,
+            pn.pane.HTML(historical_data_caption, styles=caption_styles),
             title="Zürich, Historical Data",
             **card_style,
         ),
         pn.Card(
             widget_scenarios_years,
             column_all_scenarios,
-            # view_climate_scenarios_as_tabs,
             title="Climate Scenarios",
             **card_style,
         ),
         pn.Card(
-            pn.Row(
-                pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
-                pn.pane.PNG(FIG_DIRECTORY / "feature_scoring.png", width=590),
+            pn.pane.PNG(
+                FIG_DIRECTORY / "feature_scoring.png",
+                width=700,
+                align="center",
             ),
-            title="RPC8.5 and Feature Scoring",
+            pn.pane.HTML(caption_feature_scoring, styles=caption_styles),
+            title="Feature Scoring",
             **card_style,
         ),
         LINK,

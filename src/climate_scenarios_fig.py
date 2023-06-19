@@ -14,6 +14,7 @@ from global_params_and_utils import (
 )
 
 
+# only to be plotted, not used in the app due to big data (7MB/figure)
 def _plot_box_fig(climate_scenario):
     scenario_as_number = number_from_climate_scenario(climate_scenario)
 
@@ -36,13 +37,14 @@ def _plot_box_fig(climate_scenario):
     )
 
     fig.update_layout(
-        title=f"Zurich {climate_scenario}",
-        font=dict(size=20),
-        yaxis_title="Number of Hot Days & Nights",
+        # title=f"Zurich {climate_scenario}",
+        font=dict(size=18),
+        yaxis_title="Number of Hot Days & Nights <br> per Decade",
         xaxis_title="Years",
         boxmode="group",
-        width=600,
+        width=570,
     )
+    fig.update_xaxes(tickangle=30)
 
     return plotly_as_python_dict(fig)
 
@@ -83,7 +85,7 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
                 mode="lines",
                 line=dict(color=SCENARIOS_COLOR[scenario_as_number], dash="dash"),
                 opacity=alpha_Fade,
-                name=f"sim {i//p_Step+1}",
+                name=f"Proj. Policy {i//p_Step+1}",
             )
         )
 
@@ -131,23 +133,51 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
 
     # Set subplot title
     fig.update_layout(
-        title=f"Zurich {climate_scenario}",
-        font=dict(size=20),
+        # title=f"Zurich {climate_scenario}",
+        font=dict(size=18),
         xaxis_title="Year",
         yaxis_title="Number of Hot Days & Nights",
         width=570,
     )
+    fig.update_xaxes(tickangle=30)
 
     return plotly_as_python_dict(fig)
 
 
-# box_fig_plot = {el: _plot_box_fig(el) for el in SCENARIOS}
+box_fig_plot = {el: _plot_box_fig(el) for el in SCENARIOS}
 
 
-box_fig_plot = {
-    el: pn.pane.PNG(
-        FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=570
-    )
-    for el in SCENARIOS
-}
+# box_fig_plot = {
+#     el: pn.pane.PNG(
+#         FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=570
+#     )
+#     for el in SCENARIOS
+# }
 scenario_fig_plot = {el: _plot_number_of_hot_days_and_nights(el) for el in SCENARIOS}
+
+scenario_titles = {
+    "RPC2.6": "Zurich, Scenario of low global warming",
+    "RPC4.5": "Zurich, Scenario of medium global warming",
+    "RPC8.5": "Zurich, Scenario of high to very high global warming",
+}
+
+# Projected number of concurrent hot days and nights in Zurich under
+
+scenario_captions = {
+    "RPC2.6": "The figure on the left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of low global warming (e.g. RCP2.6). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the right shows the statistical distribution of the number of hot days and nights per decade using boxplots.",
+    "RPC4.5": "The figure on the left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of medium global warming (e.g. RCP4.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the right shows the statistical distribution of the number of hot days and nights per decade using boxplots.",
+    "RPC8.5": "The figure on the left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of high to very high global warming (e.g. RCP8.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the right shows the statistical distribution of the number of hot days and nights per decade using boxplots.",
+}
+
+
+adaptation_pathways_figs = {
+    "RPC2.6": pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
+    "RPC4.5": pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
+    "RPC8.5": pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
+}
+
+adaptation_pathways_caption = {
+    "RPC2.6": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The bar means that a measure is not anymore effective.",
+    "RPC4.5": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
+    "RPC8.5": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
+}

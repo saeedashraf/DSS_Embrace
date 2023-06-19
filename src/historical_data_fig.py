@@ -34,7 +34,7 @@ def _plot_historical_data():
                     y=a[:, 0],
                     line=dict(color="green", dash="dash"),
                     opacity=alpha_Fade_obs,
-                    name="Observed",
+                    name="Obs.",
                 )
             )
         else:
@@ -44,7 +44,7 @@ def _plot_historical_data():
                     y=a[:, 0],
                     line=dict(color="green", dash="dash"),
                     opacity=alpha_Fade_obs,
-                    name="Sim {}".format(i),
+                    name="Policy {}".format(i),
                 )
             )
 
@@ -92,7 +92,7 @@ def _plot_historical_data():
 
     # Add title, font, and width to the figure
     fig.update_layout(
-        title="Zürich, Historical number of Hot Days & Nights (M1) Over the Years",
+        title="Number of concurrent hot days and nights in Zurich between 1981-2020",
         font=dict(size=20),
     )
 
@@ -100,3 +100,4 @@ def _plot_historical_data():
 
 
 historical_data_plot = _plot_historical_data()
+historical_data_caption = " Yearly number of observed concurrent hot days and nights in Zurich between 1981-2020. The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. It can be inferred that even in the years 2003 and 2015 the number of concurrent hot days a nights could be considerably reduced through different combination of adaptation policies aimed at reducing both hot days and nights."
