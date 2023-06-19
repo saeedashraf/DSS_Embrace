@@ -171,9 +171,15 @@ scenario_captions = {
 
 
 adaptation_pathways_figs = {
-    "RPC2.6": pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
-    "RPC4.5": pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
-    "RPC8.5": pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
+    "RPC2.6": pn.pane.PNG(
+        FIG_DIRECTORY / "Presentation3.png", width=590, align="center"
+    ),
+    "RPC4.5": pn.pane.PNG(
+        FIG_DIRECTORY / "Presentation3.png", width=590, align="center"
+    ),
+    "RPC8.5": pn.pane.PNG(
+        FIG_DIRECTORY / "Presentation3.png", width=590, align="center"
+    ),
 }
 
 adaptation_pathways_caption = {
