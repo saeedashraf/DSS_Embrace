@@ -135,7 +135,7 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
         font=dict(size=20),
         xaxis_title="Year",
         yaxis_title="Number of Hot Days & Nights",
-        width=600,
+        width=570,
     )
 
     return plotly_as_python_dict(fig)
@@ -146,7 +146,7 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
 
 box_fig_plot = {
     el: pn.pane.PNG(
-        FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=600
+        FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=570
     )
     for el in SCENARIOS
 }

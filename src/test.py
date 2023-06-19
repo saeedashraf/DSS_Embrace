@@ -29,9 +29,7 @@ PLOTLY_SCENARIO_FIG_DATA_PANE = {
 
 
 # Widgets
-widget_show_historical_data = pn.widgets.Checkbox(
-    name="Show Historical Data", value=True
-)
+
 widget_historical_years = pn.widgets.IntRangeSlider(
     name="Historical Years Range",
     start=HISTORICAL_YEARS[0],
@@ -41,12 +39,6 @@ widget_historical_years = pn.widgets.IntRangeSlider(
 )
 
 
-widget_show_scenarios = pn.widgets.Checkbox(name="Show Climate Scenarios", value=True)
-widget_scenarios = pn.widgets.MultiSelect(
-    name="Select Scenarios",
-    value=SCENARIOS,
-    options=SCENARIOS,
-)
 widget_scenarios_years = pn.widgets.IntRangeSlider(
     name="Scenarios Years Range",
     start=SCENARIOS_YEARS[0],
@@ -55,34 +47,6 @@ widget_scenarios_years = pn.widgets.IntRangeSlider(
     step=1,
 )
 
-widget_show_feature_scoring = pn.widgets.Checkbox(
-    name="Show Feature Scoring", value=True
-)
-
-
-sidebar_elements = [
-    widget_show_historical_data,
-    widget_historical_years,
-    pn.layout.Divider(),
-    widget_show_scenarios,
-    widget_scenarios,
-    widget_scenarios_years,
-    pn.layout.Divider(),
-    widget_show_feature_scoring,
-    pn.layout.Divider(),
-    pn.Spacer(height=20),
-    LINK,
-]
-# for el in sidebar_elements:
-#     template.sidebar.append(el)
-
-
-def _show_feature_scoring(show):
-    if show:
-        return pn.pane.PNG("./src/fig/feature_scoring.png")
-    else:
-        return None
-
 
 card_style = {
     "header_color": "white",
@@ -90,15 +54,9 @@ card_style = {
     "active_header_background": "ForestGreen",
     "styles": {"background": "white"},
     "collapsed": True,
-    "width": 1200,
+    "width": 1220,
 }
 
-# card_styles_dict = {
-#                 width=1200,
-#             header_color="white",
-#             header_background="DarkSeaGreen",
-#             active_header_background="ForestGreen",
-# }
 
 PLOTLY_XAXIS_RANGE_UPDATE_js_code = """
     target.layout.xaxis.range = source.value
@@ -121,7 +79,7 @@ PLOTLY_SCENARIO_FIG_DATA_PANE_link = {
 }
 
 
-column_all_scenarios = pn.Accordion()
+column_all_scenarios = pn.Accordion(width=1200)
 for el in SCENARIOS:
     scenario_fig = PLOTLY_SCENARIO_FIG_DATA_PANE[el]
     box_fig = box_fig_plot[el]
@@ -141,48 +99,32 @@ def view_climate_scenarios(selected_climate_scenarios):
     return column_all_scenarios
 
 
-# def view_climate_scenarios_as_tabs():
-#     res = pn.Tabs()
-#     for el in SCENARIOS:
-#         hot_fig = box_fig_plot[el]
-#         box_fig = box_fig_plot[el]
-
-#         row = pn.Row(hot_fig, box_fig)
-#         # from pathlib import Path
-
-#         # pio.write_json(box_fig, Path(el + ".json"))
-
-#         # row = pn.Row(hot_fig, box_fig)
-
-#         res.append((el, row))
-#     return res
-
+# add content to template main
 
 template.main.extend(
-    pn.Row(
-        pn.Column(
-            pn.Card(
-                widget_historical_years,
-                PLOTLY_HISTORICAL_DATA_PANE,
-                title="Zürich, Historical Data",
-                **card_style,
-            ),
-            pn.Card(
-                widget_scenarios_years,
-                column_all_scenarios,
-                # view_climate_scenarios_as_tabs,
-                title="Climate Scenarios",
-                **card_style,
-            ),
-            pn.Card(
-                pn.Row(
-                    pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=600),
-                    pn.pane.PNG(FIG_DIRECTORY / "feature_scoring.png", width=600),
-                ),
-                title="RPC8.5 and Feature Scoring",
-                **card_style,
-            ),
+    pn.Column(
+        pn.Card(
+            widget_historical_years,
+            PLOTLY_HISTORICAL_DATA_PANE,
+            title="Zürich, Historical Data",
+            **card_style,
         ),
-    )
+        pn.Card(
+            widget_scenarios_years,
+            column_all_scenarios,
+            # view_climate_scenarios_as_tabs,
+            title="Climate Scenarios",
+            **card_style,
+        ),
+        pn.Card(
+            pn.Row(
+                pn.pane.PNG(FIG_DIRECTORY / "Presentation3.png", width=590),
+                pn.pane.PNG(FIG_DIRECTORY / "feature_scoring.png", width=590),
+            ),
+            title="RPC8.5 and Feature Scoring",
+            **card_style,
+        ),
+        LINK,
+    ),
 )
 template.servable()
