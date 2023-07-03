@@ -46,6 +46,8 @@ def _plot_box_fig(climate_scenario):
     )
     fig.update_xaxes(tickangle=30)
 
+    # fig.write_image(FIG_DIRECTORY / f"box_fig_RPC_{scenario_as_number}.png")
+
     return plotly_as_python_dict(fig)
 
 
@@ -144,15 +146,15 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
     return plotly_as_python_dict(fig)
 
 
-box_fig_plot = {el: _plot_box_fig(el) for el in SCENARIOS}
+# box_fig_plot = {el: _plot_box_fig(el) for el in SCENARIOS}
 
 
-# box_fig_plot = {
-#     el: pn.pane.PNG(
-#         FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=570
-#     )
-#     for el in SCENARIOS
-# }
+box_fig_plot = {
+    el: pn.pane.PNG(
+        FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=570
+    )
+    for el in SCENARIOS
+}
 scenario_fig_plot = {el: _plot_number_of_hot_days_and_nights(el) for el in SCENARIOS}
 
 scenario_titles = {

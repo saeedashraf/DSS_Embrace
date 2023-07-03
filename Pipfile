@@ -10,6 +10,7 @@ mypy =  "*"
 ruff = "*"
 pre-commit =  "*"
 bandit = "*"
+kaleido = "*"
 
 [packages]
 panel = "~=1.0"
