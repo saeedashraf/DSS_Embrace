@@ -175,7 +175,7 @@ scenario_captions = {
 adaptation_pathways_figs = {
     el: pn.pane.PNG(
         FIG_DIRECTORY / f"metro_map_{number_from_climate_scenario(el)}.PNG",
-        width=590,
+        width=850,
         align="center",
     )
     for el in SCENARIOS
