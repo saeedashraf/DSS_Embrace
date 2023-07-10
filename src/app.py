@@ -1,6 +1,6 @@
 import panel as pn
 from climate_scenarios_fig import (
-    adaptation_pathways_caption,
+    #    adaptation_pathways_caption,
     adaptation_pathways_figs,
     box_fig_plot,
     scenario_captions,
@@ -101,15 +101,14 @@ for el in SCENARIOS:
             align="center",
         ),
         pn.Row(scenario_fig, box_fig),
-        pn.pane.HTML(scenario_captions[el], styles=caption_styles),
-        pn.layout.Divider(),
         pn.pane.HTML(
             "Adaptation pathways",
             styles=title_styles,
             align="center",
         ),
         adaptation_pathways_figs[el],
-        pn.pane.HTML(adaptation_pathways_caption[el], styles=caption_styles),
+        pn.pane.HTML(scenario_captions[el], styles=caption_styles),
+        # pn.pane.HTML(adaptation_pathways_caption[el], styles=caption_styles),
     )
 
     column_all_scenarios.append((scenario_titles[el], row))

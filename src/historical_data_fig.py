@@ -20,7 +20,7 @@ def _plot_historical_data():
     # TODO: hardcoded - it should come from the the previous arr
     x_axis_obs = np.arange(1981, 2020 + 1)
 
-    p_Step = 1
+    p_Step = 4
     alpha_Fade_obs = 1
 
     fig = go.Figure()
@@ -44,7 +44,7 @@ def _plot_historical_data():
                     y=a[:, 0],
                     line=dict(color="green", dash="dash"),
                     opacity=alpha_Fade_obs,
-                    name="Policy {}".format(i),
+                    name="Policy {}".format(i // p_Step),
                 )
             )
 

@@ -71,7 +71,7 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
     )
     arr_from_sql_matrix_HotDays = df_from_csv.values.reshape((5440, 120, 2))
 
-    p_Step = 20
+    p_Step = 300
     alpha_Fade = 1
 
     fig = go.Figure()
@@ -130,7 +130,7 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
     # Customize y-axis
     fig.update_yaxes(
         title="Number of Hot Days & Nights (M1)",
-        range=[0, 110],
+        range=[0, 40],
     )
 
     # Set subplot title
@@ -146,15 +146,15 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
     return plotly_as_python_dict(fig)
 
 
-# box_fig_plot = {el: _plot_box_fig(el) for el in SCENARIOS}
+box_fig_plot = {el: _plot_box_fig(el) for el in SCENARIOS}
 
 
-box_fig_plot = {
-    el: pn.pane.PNG(
-        FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=570
-    )
-    for el in SCENARIOS
-}
+# box_fig_plot = {
+#     el: pn.pane.PNG(
+#         FIG_DIRECTORY / f"box_fig_RPC_{number_from_climate_scenario(el)}.png", width=570
+#     )
+#     for el in SCENARIOS
+# }
 scenario_fig_plot = {el: _plot_number_of_hot_days_and_nights(el) for el in SCENARIOS}
 
 scenario_titles = {
@@ -166,9 +166,9 @@ scenario_titles = {
 # Projected number of concurrent hot days and nights in Zurich under
 
 scenario_captions = {
-    "RPC2.6": "The figure on the left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of low global warming (e.g. RCP2.6). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the right shows the statistical distribution of the number of hot days and nights per decade using boxplots.",
-    "RPC4.5": "The figure on the left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of medium global warming (e.g. RCP4.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the right shows the statistical distribution of the number of hot days and nights per decade using boxplots.",
-    "RPC8.5": "The figure on the left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of high to very high global warming (e.g. RCP8.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the right shows the statistical distribution of the number of hot days and nights per decade using boxplots.",
+    "RPC2.6": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of low global warming (e.g. RCP2.6). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The bar means that a measure is not anymore effective.",
+    "RPC4.5": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of medium global warming (e.g. RCP4.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
+    "RPC8.5": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of high to very high global warming (e.g. RCP8.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
 }
 
 
@@ -181,8 +181,8 @@ adaptation_pathways_figs = {
     for el in SCENARIOS
 }
 
-adaptation_pathways_caption = {
-    "RPC2.6": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The bar means that a measure is not anymore effective.",
-    "RPC4.5": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
-    "RPC8.5": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
-}
+# adaptation_pathways_caption = {
+#     "RPC2.6": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The bar means that a measure is not anymore effective.",
+#     "RPC4.5": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
+#     "RPC8.5": "Each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
+# }
