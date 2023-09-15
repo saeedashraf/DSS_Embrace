@@ -1,6 +1,6 @@
 # Deployment
 
-The parent environment should contain git and the requirements from [README](../README.md) and the repo.
+The parent environment should contain git and the requirements from [README](../README.md), i.e., pipenv and python=10, and the repo.
 
 ```bash
 # create a conda environment
@@ -12,24 +12,27 @@ $ conda create --name dss_embrace -c conda-forge python=3.10 git pipenv
 # go into the main directory
 (dss_embrace) $ cd DSS_Embrace
 
-
 ```
 
-Next we have to install the application and start it (no need to have the environment activated)
+Next we have to install the application and make sure you have the environment activated
 
 ```bash
 # make sure you are in the DSS_Embrace directory where Pipfile is needed
-$ cat Pipfile
+$ (dss_embrace) cat Pipfile
+
+# check python version and make sure you are using conda environment
+# (dss_embrace) which python
 
 # install a pipenv environment using the Pipfile from the project
-$ conda run --name dss_embrace pipenv install --python=/home/anplam/.conda/envs/dss_embrace/bin/python
+$ (dss_embrace) pipenv install --python=$(which python)
 
-# activate the pipenv environment
-$ pipenv shell
+```
 
+Last but not least we start the application (no need to be in the conda environment)
+
+``` 
 # start the application allowing the websockets
 $ conda run --name dss_embrace pipenv run panel serve src/app.py --reuse-sessions --global-loading-spinner --warm  --allow-websocket-origin=dss-embrace.geo.uzh.ch
-
 ```
 
 To keep the job live can be run in the background or in live session using `screen` (where you can reconnect later).
