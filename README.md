@@ -43,7 +43,7 @@ $ pre-commit install
 - start panel enabling autoreload
 
 ```bash
-$ panel serve src/app.py --autoreload --show
+$ panel serve src/app.py --reuse-sessions --global-loading-spinner --warm --autoreload --show
 ```
 
 - stop Panel when done
