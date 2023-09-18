@@ -32,13 +32,10 @@ $ conda run --prefix /project-data/conda-envs/dss_embrace pipenv install --pytho
 
 ## Start Panel
 
-```
-Last but not least we start the application (no need to be in the conda environment)
-# make sure you are in the project directory
-$ cd /project-data/DSS_Embrace/
+Last but not least we start the application. This is fully automated based on systemd. Feel free to check the corresponding file.
 
-# start the application allowing the websockets
-# see /etc/systemd/system/dss-embrace.service 
+```
+$ cat /etc/systemd/system/dss-embrace.service 
 ```
 
 ## For Testing only
