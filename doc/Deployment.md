@@ -1,39 +1,47 @@
 # Deployment
+## Preparation (done just once)
 
-The parent environment should contain git and the requirements from [README](../README.md), i.e., pipenv and python=10, and the repo.
+Go to `project-data` directory, clone the repo, create the conda environment and next the pipenv environment.  
+The conda environment should contain git and the requirements from [README](../README.md), i.e., pipenv and python=10.
+The pipenv environment is built based on the Pipfile.
 
 ```bash
+$ cd /project-data
+
 # create a conda environment
-$ conda create --name dss_embrace -c conda-forge python=3.10 git pipenv
+$ conda create --prefix /project-data/conda-envs/dss_embrace -c conda-forge python=3.10 git pipenv
 
 # clone the repo
-(dss_embrace) $ git clone https://github.com/saeedashraf/DSS_Embrace.git
+$ git clone https://github.com/saeedashraf/DSS_Embrace.git
 
 # go into the main directory
-(dss_embrace) $ cd DSS_Embrace
+$ cd DSS_Embrace
 
-```
-
-Next we have to install the application and make sure you have the environment activated
-
-```bash
 # make sure you are in the DSS_Embrace directory where Pipfile is needed
-$ (dss_embrace) cat Pipfile
+$ cat Pipfile
 
-# check python version and make sure you are using conda environment
-# (dss_embrace) which python
+
+# Custom Virtual Environment Location https://pipenv-fork.readthedocs.io/en/latest/advanced.html#custom-virtual-environment-location
+$ export PIPENV_VENV_IN_PROJECT=1
+# create the .venv directory for the pipenv virtual environment
+$ mkdir .venv
 
 # install a pipenv environment using the Pipfile from the project
-$ (dss_embrace) pipenv install --python=$(which python)
-
+$ conda run --prefix /project-data/conda-envs/dss_embrace pipenv install --python=/project-data/conda-envs/dss_embrace/bin/python
 ```
 
+## Start Panel
+
+```
 Last but not least we start the application (no need to be in the conda environment)
+# make sure you are in the project directory
+$ cd /project-data/DSS_Embrace/
 
-``` 
 # start the application allowing the websockets
-$ conda run --name dss_embrace pipenv run panel serve src/app.py --reuse-sessions --global-loading-spinner --warm  --allow-websocket-origin=dss-embrace.geo.uzh.ch
+# see /etc/systemd/system/dss-embrace.service 
 ```
+
+## For Testing only
 
 To keep the job live can be run in the background or in live session using `screen` (where you can reconnect later).
 
