@@ -121,7 +121,9 @@ description_text = "DSS_Embrace is a collaborative environment to embrace deep u
 # add content to template main
 template.main.extend(
     pn.Column(
-        pn.pane.HTML(description_text, styles=caption_styles),
+        pn.pane.HTML(
+            description_text, styles=caption_styles, width=card_style["width"]
+        ),
         pn.Card(
             widget_historical_years,
             PLOTLY_HISTORICAL_DATA_PANE,
