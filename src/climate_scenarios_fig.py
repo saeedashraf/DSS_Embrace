@@ -38,7 +38,7 @@ def _plot_box_fig(climate_scenario):
 
     fig.update_layout(
         # title=f"Zurich {climate_scenario}",
-        font=dict(size=18),
+        font=dict(size=12),
         yaxis_title="Number of Hot Days & Nights <br> per Decade",
         xaxis_title="Years",
         boxmode="group",
@@ -136,7 +136,7 @@ def _plot_number_of_hot_days_and_nights(climate_scenario):
     # Set subplot title
     fig.update_layout(
         # title=f"Zurich {climate_scenario}",
-        font=dict(size=18),
+        font=dict(size=12),
         xaxis_title="Year",
         yaxis_title="Number of Hot Days & Nights",
         width=570,
@@ -157,18 +157,22 @@ box_fig_plot = {el: _plot_box_fig(el) for el in SCENARIOS}
 # }
 scenario_fig_plot = {el: _plot_number_of_hot_days_and_nights(el) for el in SCENARIOS}
 
-scenario_titles = {
-    "RPC2.6": "Zurich, Scenario of low global warming",
-    "RPC4.5": "Zurich, Scenario of medium global warming",
-    "RPC8.5": "Zurich, Scenario of high to very high global warming",
+scenario_pane_titles = {
+    "RPC2.6": 'Zurich, Scenario "low global warming"',
+    "RPC4.5": 'Zurich, Scenario "medium global warming"',
+    "RPC8.5": 'Zurich, Scenario "high to very high global warming"',
 }
 
+scenario_titles = {
+    climate_scenario: f"Projected number of concurrent hot days and nights for {pane_title[7:]}"
+    for climate_scenario, pane_title in scenario_pane_titles.items()
+}
 # Projected number of concurrent hot days and nights in Zurich under
 
 scenario_captions = {
-    "RPC2.6": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of low global warming (e.g. RCP2.6). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The bar means that a measure is not anymore effective.",
-    "RPC4.5": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of medium global warming (e.g. RCP4.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
-    "RPC8.5": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of high to very high global warming (e.g. RCP8.5). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C.  Each line represents an adaptation policy in combination with a future realization of the climate. More stringent policies are those below the median (black line). The case from moderate to low or no adaptation is shown by the policies falling above the 75th (yellow line) and 90th (pink line) percentile respectively. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom each line represents an adaptation measure. The dot depicts either the starting of a measure or transfer to another measure (or pathway). The dashed lines show the overlapping amongst two or more measure. The bar means that a measure is not anymore effective.",
+    "RPC2.6": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of low global warming (i.e. in the order of 1.8°C temperature increase by the end of the century above the period 1850-1900). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C. The lines represent the number of hot days and nights that exceed the thresholds. These lines depict the combination of future hot day and night extremes and the effect of adaptation policies to alleviate such extremes. Stringent policies are those leading to extremes below and up to the black line, more relaxed policies fall between the yellow and pink lines and little to now adaptation policies fall above the pink line. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom should be understood as a metro map. The metro lines represent alternative sequences of adaptation measures that can be taken over time. The black circle depict the beginning of the metro line as well as the transfer to another line. The bar means that the pathway has become ineffective to alleviate the impacts of extremes.",
+    "RPC4.5": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of medium global warming (in the order of 2.7°C temperature increase by the end of the century above the period 1850-1900). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C. The lines represent the number of hot days and nights that exceed the thresholds. These lines depict the combination of future hot day and night extremes and the effect of adaptation policies to alleviate such extremes. Stringent policies are those leading to extremes below and up to the black line, more relaxed policies fall between the yellow and pink lines and little to now adaptation policies fall above the pink line. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom should be understood as a metro map. The metro lines represent alternative sequences of adaptation measures that can be taken over time. The black circle depict the beginning of the metro line as well as the transfer to another line. The bar means that the pathway has become ineffective to alleviate the impacts of extremes.",
+    "RPC8.5": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of high to very high global warming (e.g. more than 4°C temperature increase by the end of the century above the period 1850-1900). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C. The lines represent the number of hot days and nights that exceed the thresholds. These lines depict the combination of future hot day and night extremes and the effect of adaptation policies to alleviate such extremes. Stringent policies are those leading to extremes below and up to the black line, more relaxed policies fall between the yellow and pink lines and little to now adaptation policies fall above the pink line. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom should be understood as a metro map. The metro lines represent alternative sequences of adaptation measures that can be taken over time. The black circle depict the beginning of the metro line as well as the transfer to another line. The bar means that the pathway has become ineffective to alleviate the impacts of extremes.",
 }
 
 

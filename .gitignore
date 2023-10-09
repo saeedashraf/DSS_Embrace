@@ -2,6 +2,8 @@
 .DS_store
 ~*
 
+__pycache__/
+
 # Ignore .mypy_cache directory
 *.mypy_cache
 

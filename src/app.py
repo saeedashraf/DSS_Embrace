@@ -5,6 +5,7 @@ from climate_scenarios_fig import (
     box_fig_plot,
     scenario_captions,
     scenario_fig_plot,
+    scenario_pane_titles,
     scenario_titles,
 )
 from global_params_and_utils import (
@@ -19,7 +20,7 @@ from historical_data_fig import (
 )
 
 template = pn.template.MaterialTemplate(
-    title="DSS_Embrace",
+    title="DSS_Embrace: Decision Support for Climate Adaptation Planning",
     header_background="ForestGreen",
 )
 
@@ -96,7 +97,7 @@ for el in SCENARIOS:
     box_fig = box_fig_plot[el]
     row = pn.Column(
         pn.pane.HTML(
-            "Projected number of concurrent hot days and nights",
+            scenario_titles[el],
             styles=title_styles,
             align="center",
         ),
@@ -111,13 +112,16 @@ for el in SCENARIOS:
         # pn.pane.HTML(adaptation_pathways_caption[el], styles=caption_styles),
     )
 
-    column_all_scenarios.append((scenario_titles[el], row))
+    column_all_scenarios.append((scenario_pane_titles[el], row))
 
 caption_feature_scoring = "Feature scoring analysis showing the relative importance of the choice of climate scenarios (RCPs), climate model (Climate Models), intra-climate model variability (Intra CM variability), thresholds of minimum temperature (Tmin) and thresholds of minimum temperature (Tmax) for the outcomes. The outcomes are the number of concurrent hot days and nights, their frequency and length. Higher numbers and bright colours indicate higher importance."
+
+description_text = "DSS_Embrace is a collaborative environment to embrace deep uncertainties in decision making on climate risks. Deep uncertainties often involve high stakes decisions, unique situations, long-term planning, or situations where the future may be fundamentally different from the past. In dealing with deep uncertainties, experts employ various methods and approaches to enhance decision-making and strategic planning. These include scenario analysis, modeling, simulation, Bayesian approaches, expert opinions, sensitivity analysis, and learning from parallel fields or historical analogies.  DSS_Embrace uses the so-called exploratory modelling framework where decision makers are confronted with several possible climate realisations and policy combinations. The climate realisations are the results of climate models, interannual climate variability and climate scenarios, whereas the policies represent the effect of potential adaptation measures. Adaptation pathways provide a flexible and dynamic approach to decision-making that can be adjusted over time as new information becomes available. Here, we sow some illustrative adaptation pathways to link the climate realisations-policies figure with concrete actions on the ground. DSS_Embrace is co-financed by the Digital Initiative Zurich (DIZH) and the Eclim Group at the Department of Geography."
 
 # add content to template main
 template.main.extend(
     pn.Column(
+        pn.pane.HTML(description_text, styles=caption_styles),
         pn.Card(
             widget_historical_years,
             PLOTLY_HISTORICAL_DATA_PANE,
@@ -138,7 +142,7 @@ template.main.extend(
                 align="center",
             ),
             pn.pane.HTML(caption_feature_scoring, styles=caption_styles),
-            title="Feature Scoring",
+            title="Relative importance of determinants for decision-making",
             **card_style,
         ),
         LINK,
