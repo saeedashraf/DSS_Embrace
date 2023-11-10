@@ -64,7 +64,9 @@ card_style = {
     "header_color": "white",
     "header_background": "DarkSeaGreen",
     "active_header_background": "ForestGreen",
-    "styles": {"background": "white"},
+    "styles": {
+        "background": "white",
+    },
     "collapsed": True,
     "width": 1220,
 }
@@ -115,11 +117,29 @@ for el in SCENARIOS:
 
     column_all_scenarios.append((scenario_pane_titles[el], row))
 
-caption_feature_scoring = "Feature scoring analysis showing the relative importance of the choice of climate scenarios (RCPs), climate model (Climate Models), intra-climate model variability (Intra CM variability), thresholds of minimum temperature (Tmin) and thresholds of minimum temperature (Tmax) for the outcomes. The outcomes are the number of concurrent hot days and nights, their frequency and length. Higher numbers and bright colours indicate higher importance."
+
+def translate_caption_feature_scoring(language):
+    return {
+        "EN": "Feature scoring analysis showing the relative importance of the choice of climate scenarios (RCPs), climate model (Climate Models), intra-climate model variability (Intra CM variability), thresholds of minimum temperature (Tmin) and thresholds of minimum temperature (Tmax) for the outcomes. The outcomes are the number of concurrent hot days and nights, their frequency and length. Higher numbers and bright colours indicate higher importance.",
+        "DE": "Feature-Scoring-Analyse, die die relative Bedeutung der Auswahl der Klimaszenarien (RCPs), des Klimamodells (Klimamodelle), der Variabilität innerhalb des Klimamodells (Intra-CM-Variabilität), der Schwellenwerte der Mindesttemperatur (Tmin) und der Schwellenwerte der Maximaltemperatur (Tmax) für die Ergebnisse zeigt. Die Ergebnisse sind die Anzahl der zusammen auftretender Hitzetage und Tropenächte, deren Häufigkeit und Dauer. Höhere Zahlen und hellere Farben kenntzeichnen eine höhere Bedeutung.",
+    }[language]
+
+
+caption_feature_scoring = pn.bind(
+    translate_caption_feature_scoring, language=LANGUAGE_WIDGET
+)
+
+
+def translate_title_historical(language):
+    return {"EN": "Zürich, Historical Data", "DE": "Zürich: Historische Daten"}[
+        language
+    ]
+
+
+historical_title = pn.bind(translate_title_historical, language=LANGUAGE_WIDGET)
 
 
 def translate_description_text(language):
-    print(language)
     return {
         "EN": "DSS_Embrace is a collaborative environment to embrace deep uncertainties in decision making on climate risks. Deep uncertainties often involve high stakes decisions, unique situations, long-term planning, or situations where the future may be fundamentally different from the past. In dealing with deep uncertainties, experts employ various methods and approaches to enhance decision-making and strategic planning. These include scenario analysis, modeling, simulation, Bayesian approaches, expert opinions, sensitivity analysis, and learning from parallel fields or historical analogies.  DSS_Embrace uses the so-called exploratory modelling framework where decision makers are confronted with several possible climate realisations and policy combinations. The climate realisations are the results of climate models, interannual climate variability and climate scenarios, whereas the policies represent the effect of potential adaptation measures. Adaptation pathways provide a flexible and dynamic approach to decision-making that can be adjusted over time as new information becomes available. Here, we sow some illustrative adaptation pathways to link the climate realisations-policies figure with concrete actions on the ground. DSS_Embrace is co-financed by the Digital Initiative Zurich (DIZH) and the Eclim Group at the Department of Geography.",
         "DE": "DSS_Embrace ist eine kollaborative Umgebung, um grossen Unsicherheiten bei der Entscheidungsfindung in Zusammenhang mit Klimarisiken zu berücksichtigen. Bei grossen Unsicherheiten geht es oft um Entscheidungen, bei denen viel auf dem Spiel steht, um einzigartige Fälle, um langfristige Planung oder um Situationen, in denen sich die Zukunft wesentlich von der Vergangenheit unterscheiden kann. Im Umgang mit grossen Unsicherheiten setzen Experten verschiedene Methoden und Ansätze ein, um die Entscheidungsfindung und strategische Planung zu verbessern. Dazu gehören Szenarioanalyse, Modellierung, Simulation, Bayesische Ansätze, Expertenmeinungen, Sensitivitätsanalysen und Lernen aus Parallelfeldern oder historischen Analogien. DSS_Embrace verwendet den so genannten explorativen Modellierungsansatz, bei dem die Entscheidungsträger mit mehreren möglichen Entwicklungen des Klimas und Strategiekombinationen konfrontiert werden. Die Klimaentwicklungen sind die Ergebnisse von Klimamodellen, interannueller Klimavariabilität und Klimaszenarien, während die Strategien die Wirkung möglicher Anpassungsmassnahmen darstellen. Anpassungspfade bieten einen flexiblen und dynamischen Ansatz für die Entscheidungsfindung, der im Laufe der Zeit angepasst werden kann, wenn neue Informationen verfügbar werden. Hier werden einige illustrative Anpassungspfade aufgezeigt, um die Abbildung der Klimaentwicklungsstrategien mit konkreten Massnahmen vor Ort zu verbinden. DSS_Embrace wird von der Digitalisierungsinitiative der Zürcher Hochuschulen (DIZH) und der Eclim-Gruppe am Geographischen Institut mitfinanziert.",
@@ -130,7 +150,6 @@ description_text = pn.bind(translate_description_text, language=LANGUAGE_WIDGET)
 
 
 def translate_title_historical(language):
-    print(language)
     return {"EN": "Zürich, Historical Data", "DE": "Zürich: Historische Daten"}[
         language
     ]
@@ -140,7 +159,6 @@ historical_title = pn.bind(translate_title_historical, language=LANGUAGE_WIDGET)
 
 
 def translate_title_climate_scenarios(language):
-    print(language)
     return {"EN": "Climate Scenarios", "DE": "Klimaszenarien"}[language]
 
 
@@ -150,7 +168,6 @@ climate_scenarios_title = pn.bind(
 
 
 def translate_title_decision_making(language):
-    print(language)
     return {
         "EN": "Relative importance of determinants for decision-making",
         "DE": "Relative Bedeutung der Determinanten für die Entscheidungsfindung",
