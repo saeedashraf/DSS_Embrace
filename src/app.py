@@ -3,6 +3,7 @@ from climate_scenarios_fig import (
     #    adaptation_pathways_caption,
     adaptation_pathways_figs,
     box_fig_plot,
+    caption_pathways,
     scenario_captions,
     scenario_fig_plot,
     scenario_pane_titles,
@@ -110,7 +111,12 @@ for el in SCENARIOS:
             styles=title_styles,
             align="center",
         ),
-        adaptation_pathways_figs[el],
+        pn.Row(
+            adaptation_pathways_figs[el],
+            pn.pane.HTML(
+                caption_pathways, styles=caption_styles, align="center", width=470
+            ),
+        ),
         pn.pane.HTML(scenario_captions[el], styles=caption_styles),
         # pn.pane.HTML(adaptation_pathways_caption[el], styles=caption_styles),
     )
@@ -213,3 +219,9 @@ template.main.extend(
     ),
 )
 template.servable()
+
+# Not FEASIBLE - Update Titles
+title = {
+    "EN": "DSS_Embrace: Decision Support for Climate Adaptation Planning",
+    "DE": "DSS_Embrace: Entscheidungshilfe für die Planung von Klimaanpassungsmassnahmen",
+}

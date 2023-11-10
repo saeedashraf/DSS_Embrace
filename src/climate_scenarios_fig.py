@@ -203,6 +203,16 @@ def translate_scenario_titles(language):
 scenario_titles = pn.bind(translate_scenario_titles, language=LANGUAGE_WIDGET)
 
 
+def translate_caption_pathways(language):
+    return {
+        "EN": "HHWS = Heat health early warning systems (HHWS) are adaptation measures that provide timely information to protect populations from the health risks of extreme heat events. <br>Albedo = Increase of the reflection of solar radiation (e.g. by white pavements, roofs) <br>Urban geometry = Change the layout of house constructions, street orientations, and building heights <br>Blue Spaces = more water bodies, porous surfaces, fountains <br>Green spaces = more trees, green roofs/facades",
+        "DE": "HHWS = Hitzegesundheits-Frühwarnsysteme (HHWS) sind Anpassungsmassnahmen, die frühzeitig Informationen liefern, um die Bevölkerung vor den Gesundheitsrisiken extremer Hitzeereignissezu schützen.<br>Albedo = Erhöhung der Reflexion der Sonnenstrahlung (z. B. durch weisse Gehwege, Dächer)<br>Stadtgeometrie = Änderung der Gestaltung von Hauskonstruktionen, Strassenausrichtungen und Gebäudehöhen <br>Blaue Flächen = mehr Gewässer, poröse Oberflächen, Brunnen<br>Grünflächen = mehr Bäume, grüne Dächer/Fassaden",
+    }[language]
+
+
+caption_pathways = pn.bind(translate_caption_pathways, language=LANGUAGE_WIDGET)
+
+
 def translate_caption_RPC26(language):
     return {
         "EN": "The figure on the top left shows the yearly projected number of concurrent hot days and nights in Zurich until the end of the century under a scenario of low global warming (i.e. in the order of 1.8°C temperature increase by the end of the century above the period 1850-1900). The threshold for hot days is in the range 28°C–35°C and for hot nights is in the range 15°C–20°C. The lines represent the number of hot days and nights that exceed the thresholds. These lines depict the combination of future hot day and night extremes and the effect of adaptation policies to alleviate such extremes. Stringent policies are those leading to extremes below and up to the black line, more relaxed policies fall between the yellow and pink lines and little to now adaptation policies fall above the pink line. The figure on the top right shows the statistical distribution of the number of hot days and nights per decade using boxplots. In the figure on the bottom should be understood as a metro map. The metro lines represent alternative sequences of adaptation measures that can be taken over time. The black circle depict the beginning of the metro line as well as the transfer to another line. The bar means that the pathway has become ineffective to alleviate the impacts of extremes.",
@@ -240,7 +250,7 @@ scenario_captions = {
 adaptation_pathways_figs = {
     el: pn.pane.PNG(
         FIG_DIRECTORY / f"metro_map_{number_from_climate_scenario(el)}.PNG",
-        width=850,
+        width=670,
         align="center",
     )
     for el in SCENARIOS
