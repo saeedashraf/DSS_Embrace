@@ -7,6 +7,7 @@ from climate_scenarios_fig import (
     scenario_fig_plot,
     scenario_pane_titles,
     scenario_titles,
+    title_pathways,
 )
 from global_params_and_utils import (
     FIG_DIRECTORY,
@@ -99,13 +100,13 @@ for el in SCENARIOS:
     box_fig = box_fig_plot[el]
     row = pn.Column(
         pn.pane.HTML(
-            scenario_titles[el],
+            scenario_titles,
             styles=title_styles,
             align="center",
         ),
         pn.Row(scenario_fig, box_fig),
         pn.pane.HTML(
-            "Adaptation pathways",
+            title_pathways,
             styles=title_styles,
             align="center",
         ),
