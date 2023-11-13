@@ -3,20 +3,23 @@ from climate_scenarios_fig import (
     #    adaptation_pathways_caption,
     adaptation_pathways_figs,
     box_fig_plot,
+    caption_pathways,
     scenario_captions,
     scenario_fig_plot,
     scenario_pane_titles,
     scenario_titles,
+    title_pathways,
 )
 from global_params_and_utils import (
     FIG_DIRECTORY,
     HISTORICAL_YEARS,
+    LANGUAGE_WIDGET,
     SCENARIOS,
     SCENARIOS_YEARS,
 )
 from historical_data_fig import (
+    PLOTLY_HISTORICAL_DATA_PANE,
     historical_data_caption,
-    historical_data_plot,
 )
 
 template = pn.template.MaterialTemplate(
@@ -33,7 +36,6 @@ LINK = pn.pane.Markdown(
 """
 )
 
-PLOTLY_HISTORICAL_DATA_PANE = pn.pane.Plotly(historical_data_plot, width=1200)
 PLOTLY_SCENARIO_FIG_DATA_PANE = {
     el: pn.pane.Plotly(scenario_fig_plot[el]) for el in SCENARIOS
 }
@@ -63,7 +65,9 @@ card_style = {
     "header_color": "white",
     "header_background": "DarkSeaGreen",
     "active_header_background": "ForestGreen",
-    "styles": {"background": "white"},
+    "styles": {
+        "background": "white",
+    },
     "collapsed": True,
     "width": 1220,
 }
@@ -97,44 +101,108 @@ for el in SCENARIOS:
     box_fig = box_fig_plot[el]
     row = pn.Column(
         pn.pane.HTML(
-            scenario_titles[el],
+            scenario_titles,
             styles=title_styles,
             align="center",
         ),
         pn.Row(scenario_fig, box_fig),
         pn.pane.HTML(
-            "Adaptation pathways",
+            title_pathways,
             styles=title_styles,
             align="center",
         ),
-        adaptation_pathways_figs[el],
+        pn.Row(
+            adaptation_pathways_figs[el],
+            pn.pane.HTML(
+                caption_pathways, styles=caption_styles, align="center", width=470
+            ),
+        ),
         pn.pane.HTML(scenario_captions[el], styles=caption_styles),
         # pn.pane.HTML(adaptation_pathways_caption[el], styles=caption_styles),
     )
 
     column_all_scenarios.append((scenario_pane_titles[el], row))
 
-caption_feature_scoring = "Feature scoring analysis showing the relative importance of the choice of climate scenarios (RCPs), climate model (Climate Models), intra-climate model variability (Intra CM variability), thresholds of minimum temperature (Tmin) and thresholds of minimum temperature (Tmax) for the outcomes. The outcomes are the number of concurrent hot days and nights, their frequency and length. Higher numbers and bright colours indicate higher importance."
 
-description_text = "DSS_Embrace is a collaborative environment to embrace deep uncertainties in decision making on climate risks. Deep uncertainties often involve high stakes decisions, unique situations, long-term planning, or situations where the future may be fundamentally different from the past. In dealing with deep uncertainties, experts employ various methods and approaches to enhance decision-making and strategic planning. These include scenario analysis, modeling, simulation, Bayesian approaches, expert opinions, sensitivity analysis, and learning from parallel fields or historical analogies.  DSS_Embrace uses the so-called exploratory modelling framework where decision makers are confronted with several possible climate realisations and policy combinations. The climate realisations are the results of climate models, interannual climate variability and climate scenarios, whereas the policies represent the effect of potential adaptation measures. Adaptation pathways provide a flexible and dynamic approach to decision-making that can be adjusted over time as new information becomes available. Here, we sow some illustrative adaptation pathways to link the climate realisations-policies figure with concrete actions on the ground. DSS_Embrace is co-financed by the Digital Initiative Zurich (DIZH) and the Eclim Group at the Department of Geography."
+def translate_caption_feature_scoring(language):
+    return {
+        "EN": "Feature scoring analysis showing the relative importance of the choice of climate scenarios (RCPs), climate model (Climate Models), intra-climate model variability (Intra CM variability), thresholds of minimum temperature (Tmin) and thresholds of minimum temperature (Tmax) for the outcomes. The outcomes are the number of concurrent hot days and nights, their frequency and length. Higher numbers and bright colours indicate higher importance.",
+        "DE": "Feature-Scoring-Analyse, die die relative Bedeutung der Auswahl der Klimaszenarien (RCPs), des Klimamodells (Klimamodelle), der Variabilität innerhalb des Klimamodells (Intra-CM-Variabilität), der Schwellenwerte der Mindesttemperatur (Tmin) und der Schwellenwerte der Maximaltemperatur (Tmax) für die Ergebnisse zeigt. Die Ergebnisse sind die Anzahl der zusammen auftretender Hitzetage und Tropenächte, deren Häufigkeit und Dauer. Höhere Zahlen und hellere Farben kenntzeichnen eine höhere Bedeutung.",
+    }[language]
 
+
+caption_feature_scoring = pn.bind(
+    translate_caption_feature_scoring, language=LANGUAGE_WIDGET
+)
+
+
+def translate_title_historical(language):
+    return {"EN": "Zürich, Historical Data", "DE": "Zürich: Historische Daten"}[
+        language
+    ]
+
+
+historical_title = pn.bind(translate_title_historical, language=LANGUAGE_WIDGET)
+
+
+def translate_description_text(language):
+    return {
+        "EN": "DSS_Embrace is a collaborative environment to embrace deep uncertainties in decision making on climate risks. Deep uncertainties often involve high stakes decisions, unique situations, long-term planning, or situations where the future may be fundamentally different from the past. In dealing with deep uncertainties, experts employ various methods and approaches to enhance decision-making and strategic planning. These include scenario analysis, modeling, simulation, Bayesian approaches, expert opinions, sensitivity analysis, and learning from parallel fields or historical analogies.  DSS_Embrace uses the so-called exploratory modelling framework where decision makers are confronted with several possible climate realisations and policy combinations. The climate realisations are the results of climate models, interannual climate variability and climate scenarios, whereas the policies represent the effect of potential adaptation measures. Adaptation pathways provide a flexible and dynamic approach to decision-making that can be adjusted over time as new information becomes available. Here, we sow some illustrative adaptation pathways to link the climate realisations-policies figure with concrete actions on the ground. DSS_Embrace is co-financed by the Digital Initiative Zurich (DIZH) and the Eclim Group at the Department of Geography.",
+        "DE": "DSS_Embrace ist eine kollaborative Umgebung, um grossen Unsicherheiten bei der Entscheidungsfindung in Zusammenhang mit Klimarisiken zu berücksichtigen. Bei grossen Unsicherheiten geht es oft um Entscheidungen, bei denen viel auf dem Spiel steht, um einzigartige Fälle, um langfristige Planung oder um Situationen, in denen sich die Zukunft wesentlich von der Vergangenheit unterscheiden kann. Im Umgang mit grossen Unsicherheiten setzen Experten verschiedene Methoden und Ansätze ein, um die Entscheidungsfindung und strategische Planung zu verbessern. Dazu gehören Szenarioanalyse, Modellierung, Simulation, Bayesische Ansätze, Expertenmeinungen, Sensitivitätsanalysen und Lernen aus Parallelfeldern oder historischen Analogien. DSS_Embrace verwendet den so genannten explorativen Modellierungsansatz, bei dem die Entscheidungsträger mit mehreren möglichen Entwicklungen des Klimas und Strategiekombinationen konfrontiert werden. Die Klimaentwicklungen sind die Ergebnisse von Klimamodellen, interannueller Klimavariabilität und Klimaszenarien, während die Strategien die Wirkung möglicher Anpassungsmassnahmen darstellen. Anpassungspfade bieten einen flexiblen und dynamischen Ansatz für die Entscheidungsfindung, der im Laufe der Zeit angepasst werden kann, wenn neue Informationen verfügbar werden. Hier werden einige illustrative Anpassungspfade aufgezeigt, um die Abbildung der Klimaentwicklungsstrategien mit konkreten Massnahmen vor Ort zu verbinden. DSS_Embrace wird von der Digitalisierungsinitiative der Zürcher Hochuschulen (DIZH) und der Eclim-Gruppe am Geographischen Institut mitfinanziert.",
+    }[language]
+
+
+description_text = pn.bind(translate_description_text, language=LANGUAGE_WIDGET)
+
+
+def translate_title_historical(language):
+    return {"EN": "Zürich, Historical Data", "DE": "Zürich: Historische Daten"}[
+        language
+    ]
+
+
+historical_title = pn.bind(translate_title_historical, language=LANGUAGE_WIDGET)
+
+
+def translate_title_climate_scenarios(language):
+    return {"EN": "Climate Scenarios", "DE": "Klimaszenarien"}[language]
+
+
+climate_scenarios_title = pn.bind(
+    translate_title_climate_scenarios, language=LANGUAGE_WIDGET
+)
+
+
+def translate_title_decision_making(language):
+    return {
+        "EN": "Relative importance of determinants for decision-making",
+        "DE": "Relative Bedeutung der Determinanten für die Entscheidungsfindung",
+    }[language]
+
+
+decision_making_title = pn.bind(
+    translate_title_decision_making, language=LANGUAGE_WIDGET
+)
 # add content to template main
 template.main.extend(
     pn.Column(
+        LANGUAGE_WIDGET,
         pn.pane.HTML(
-            description_text, styles=caption_styles, width=card_style["width"]
+            description_text,
+            styles=caption_styles,
+            width=card_style["width"],
         ),
         pn.Card(
             widget_historical_years,
             PLOTLY_HISTORICAL_DATA_PANE,
             pn.pane.HTML(historical_data_caption, styles=caption_styles),
-            title="Zürich, Historical Data",
+            title=historical_title,
             **card_style,
         ),
         pn.Card(
             widget_scenarios_years,
             column_all_scenarios,
-            title="Climate Scenarios",
+            title=climate_scenarios_title,
             **card_style,
         ),
         pn.Card(
@@ -144,10 +212,16 @@ template.main.extend(
                 align="center",
             ),
             pn.pane.HTML(caption_feature_scoring, styles=caption_styles),
-            title="Relative importance of determinants for decision-making",
+            title=decision_making_title,
             **card_style,
         ),
         LINK,
     ),
 )
 template.servable()
+
+# Not FEASIBLE - Update Titles
+title = {
+    "EN": "DSS_Embrace: Decision Support for Climate Adaptation Planning",
+    "DE": "DSS_Embrace: Entscheidungshilfe für die Planung von Klimaanpassungsmassnahmen",
+}

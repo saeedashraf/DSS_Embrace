@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+import panel as pn
 import plotly.io as pio
 
 DATA_DIRECTORY = Path("./src/data/")
@@ -19,3 +20,8 @@ def plotly_as_python_dict(fig):
 
 def number_from_climate_scenario(climate_scenario):
     return climate_scenario[-3] + climate_scenario[-1]
+
+
+LANGUAGE_WIDGET = pn.widgets.Select(
+    name="EN/DE", options=["EN", "DE"], value="EN", width=80
+)

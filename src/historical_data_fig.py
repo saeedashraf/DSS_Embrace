@@ -1,7 +1,12 @@
 import numpy as np
 import pandas as pd
+import panel as pn
 import plotly.graph_objects as go
-from global_params_and_utils import DATA_DIRECTORY, plotly_as_python_dict
+from global_params_and_utils import (
+    DATA_DIRECTORY,
+    LANGUAGE_WIDGET,
+    plotly_as_python_dict,
+)
 
 
 def _plot_historical_data():
@@ -92,12 +97,36 @@ def _plot_historical_data():
 
     # Add title, font, and width to the figure
     fig.update_layout(
-        title="Past number of concurrent hot days and nights in Zurich and policy impact",
+        title="TODO",
         font=dict(size=20),
     )
 
     return plotly_as_python_dict(fig)
 
 
-historical_data_plot = _plot_historical_data()
-historical_data_caption = "The graph depicts the yearly number of observed concurrent hot days (28°C–35°C) and nights (15°C–20°C) in Zurich from 1981 to 2020 and the impact of different adaptation policies. The lines represent the number of hot days and nights that exceed the thresholds. These lines depict the combination of observed hot day and night extremes and the effect of adaptation policies to alleviate such extremes. Stringent policies are those leading to extremes below and up to the black line, more relaxed policies fall between the yellow and pink lines and little to now adaptation policies fall above the pink line. From the graph, it can be inferred that even in the years 2003 and 2015 the number of concurrent hot days and nights extremes could have been considerably reduced"
+def translate_PLOTLY_HISTORICAL_DATA_PANE(language):
+    title = {
+        "EN": "Historic concurrent hot days and nights in Zurich and policy impact",
+        "DE": "Historische zusammen auftretende Hitzetage und Tropennächte in Zürich <br>und Strategiewirkung",
+    }[language]
+    historical_data_plot = _plot_historical_data()
+
+    historical_data_plot["layout"]["title"]["text"] = title
+    return pn.pane.Plotly(historical_data_plot, width=1200)
+
+
+PLOTLY_HISTORICAL_DATA_PANE = pn.bind(
+    translate_PLOTLY_HISTORICAL_DATA_PANE, language=LANGUAGE_WIDGET
+)
+
+
+def translate_historical_data_caption(language):
+    return {
+        "EN": "The graph depicts the yearly number of observed concurrent hot days (28°C–35°C) and nights (15°C–20°C) in Zurich from 1981 to 2020 and the impact of different adaptation policies. The lines represent the number of hot days and nights that exceed the thresholds. These lines depict the combination of observed hot day and night extremes and the effect of adaptation policies to alleviate such extremes. Stringent policies are those leading to extremes below and up to the black line, more relaxed policies fall between the yellow and pink lines and little to now adaptation policies fall above the pink line. From the graph, it can be inferred that even in the years 2003 and 2015 the number of concurrent hot days and nights extremes could have been considerably reduced",
+        "DE": "Die Grafik stellt die jährliche Anzahl der beobachteten zusammen auftretenden Hitzetage (28°C-35°C) und Tropennächte (15°C-20°C) in Zürich von 1981 bis 2020 sowie die Wirkung verschiedener Anpassungsmassnahmen dar. Die Linien stellen die Anzahl Hitzetage und Tropennächte dar, die die Schwellenwerte überschreiten. Diese Linien zeigen die Kombination von beobachteten Extremen von heissen Tagen und Nächten und die Wirkung von Anpassungsmassnahmen zur Abschwächung dieser Extreme. Strenge Massnahmen sind solche, die zu Extremen unterhalb und bis zur schwarzen Linie führen, die Extreme unter weniger strengen Massnahmen liegen zwischen der gelben und der rosafarbenen Linie und die Extreme unter wenig bis gar keinen Anpassungsmassnahmen liegen oberhalb der rosafarbenen Linie. Aus der Graphik lässt sich ableiten, dass selbst in den Jahren 2003 und 2015 die Zahl der zusammen auftretenden Hitzetage und Tropennächte erheblich hätte reduziert werden können.",
+    }[language]
+
+
+historical_data_caption = pn.bind(
+    translate_historical_data_caption, language=LANGUAGE_WIDGET
+)
