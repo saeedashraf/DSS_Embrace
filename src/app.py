@@ -18,8 +18,9 @@ from global_params_and_utils import (
     SCENARIOS_YEARS,
 )
 from historical_data_fig import (
-    PLOTLY_HISTORICAL_DATA_PANE,
     historical_data_caption,
+    historical_data_plot,
+    historical_data_title,
 )
 
 template = pn.template.MaterialTemplate(
@@ -35,6 +36,7 @@ LINK = pn.pane.Markdown(
 
 """
 )
+PLOTLY_HISTORICAL_DATA_PANE = pn.pane.Plotly(historical_data_plot, width=1200)
 
 PLOTLY_SCENARIO_FIG_DATA_PANE = {
     el: pn.pane.Plotly(scenario_fig_plot[el]) for el in SCENARIOS
@@ -194,6 +196,11 @@ template.main.extend(
         ),
         pn.Card(
             widget_historical_years,
+            pn.pane.HTML(
+                historical_data_title,
+                styles=title_styles,
+                align="center",
+            ),
             PLOTLY_HISTORICAL_DATA_PANE,
             pn.pane.HTML(historical_data_caption, styles=caption_styles),
             title=historical_title,

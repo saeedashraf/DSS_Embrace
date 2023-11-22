@@ -97,26 +97,24 @@ def _plot_historical_data():
 
     # Add title, font, and width to the figure
     fig.update_layout(
-        title="TODO",
         font=dict(size=20),
     )
 
     return plotly_as_python_dict(fig)
 
 
-def translate_PLOTLY_HISTORICAL_DATA_PANE(language):
-    title = {
+historical_data_plot = _plot_historical_data()
+
+
+def translate_historical_data_title(language):
+    return {
         "EN": "Historic concurrent hot days and nights in Zurich and policy impact",
-        "DE": "Historische zusammen auftretende Hitzetage und Tropennächte in Zürich <br>und Strategiewirkung",
+        "DE": "Historische zusammen auftretende Hitzetage und Tropennächte in Zürich und Strategiewirkung",
     }[language]
-    historical_data_plot = _plot_historical_data()
-
-    historical_data_plot["layout"]["title"]["text"] = title
-    return pn.pane.Plotly(historical_data_plot, width=1200)
 
 
-PLOTLY_HISTORICAL_DATA_PANE = pn.bind(
-    translate_PLOTLY_HISTORICAL_DATA_PANE, language=LANGUAGE_WIDGET
+historical_data_title = pn.bind(
+    translate_historical_data_title, language=LANGUAGE_WIDGET
 )
 
 
